@@ -14,9 +14,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout my repository
+      - name: Checkout destination repository
         uses: actions/checkout@v4
         with:
+          ref: main
           fetch-depth: 0
 
       - name: Configure Git
@@ -24,15 +25,15 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Add source repository
+      - name: Fetch source updates
         run: |
           git remote add upstream https://github.com/blacurly/Week-1-pi-integrasi-ai.git
-          git fetch upstream
+          git fetch upstream main
 
       - name: Merge source updates
         run: |
           git merge --no-edit upstream/main
 
-      - name: Push updates to my repository
+      - name: Push updates to destination
         run: |
-          git push origin HEAD:${{ github.event.repository.default_branch }}
+          git push origin HEAD:main
